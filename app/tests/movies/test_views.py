@@ -1,5 +1,3 @@
-import json
-
 import pytest
 
 from movies.models import Movie
@@ -9,34 +7,27 @@ from movies.models import Movie
 def test_add_movie(client):
 
     movies = Movie.objects.all()
-    
     length = len(movies)
 
     resp = client.post(
         "/api/movies/",
-        {
-            "title": "The Big Lebowski",
-            "genre": "comedy",
-            "year": "1998",
-        },
-        content_type="application/json"
+        {"title": "The Big Lebowski", "genre": "comedy", "year": "1998",},
+        content_type="application/json",
     )
+
     assert resp.status_code == 201
     assert resp.data["title"] == "The Big Lebowski"
 
     movies = Movie.objects.all()
-    assert len(movies) == length+1
+    assert len(movies) == length + 1
+
 
 @pytest.mark.django_db
 def test_add_movie_invalid_json(client):
     movies = Movie.objects.all()
     length = len(movies)
 
-    resp = client.post(
-        "/api/movies/",
-        {},
-        content_type="application/json"
-    )
+    resp = client.post("/api/movies/", {}, content_type="application/json")
     assert resp.status_code == 400
 
     movies = Movie.objects.all()
@@ -50,16 +41,14 @@ def test_add_movie_invalid_json_keys(client):
 
     resp = client.post(
         "/api/movies/",
-        {
-            "title": "The Big Lebowski",
-            "genre": "comedy",
-        },
-        content_type="application/json"
+        {"title": "The Big Lebowski", "genre": "comedy",},
+        content_type="application/json",
     )
     assert resp.status_code == 400
 
     movies = Movie.objects.all()
     assert len(movies) == length
+
 
 @pytest.mark.django_db
 def test_get_single_movie(client, add_movie):
@@ -73,9 +62,10 @@ def test_get_single_movie_incorrect_id(client):
     resp = client.get(f"/api/movies/foo/")
     assert resp.status_code == 404
 
+
 @pytest.mark.django_db
 def test_get_all_movies(client, add_movie):
-    movie_one = add_movie(title="The Big Lebowski", genre="comedy", year="1998")
+    movie_one = add_movie(title="Fargo", genre="comedy", year="1998")
     movie_two = add_movie("No Country for Old Men", "thriller", "2007")
     resp = client.get(f"/api/movies/")
     assert resp.status_code == 200

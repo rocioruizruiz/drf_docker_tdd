@@ -7,4 +7,5 @@ def ping(request):
     data = {"ping": "pong!"}
     return JsonResponse(data)
 
-#Next, update urls.py in "drf_project":
+
+# Next, update urls.py in "drf_project":
