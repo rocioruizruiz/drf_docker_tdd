@@ -3,8 +3,8 @@ import pytest
 from movies.models import Movie
 
 
-#  Pytest-Django takes a conservative approach to enabling database access in your tests. 
-#  You must explicitly request database access via the @pytest.mark.django_db decorator.
+# Pytest-Django takes a conservative approach to enabling database access in your tests.
+# You must explicitly request database access via the @pytest.mark.django_db decorator.
 @pytest.mark.django_db
 def test_movie_model():
     movie = Movie(title="Raising Arizona", genre="comedy", year="1987")
